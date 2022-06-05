@@ -221,6 +221,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# django
+static/
+
 # my files
 commands
 layout/
