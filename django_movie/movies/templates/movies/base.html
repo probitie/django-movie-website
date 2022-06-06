@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- banner -->
+<section class="ab-info-main py-md-5 py-4 editContent"
+         style="outline: none; outline-offset: -2px; cursor: inherit; color: rgb(33, 37, 41); font-size: 16px; background-color: rgba(0, 0, 0, 0); font-family: Lato, sans-serif;">
+
+    {% block container %}
+
+    <div class="container-fluid py-md-3">
+
+    {% endblock container %}
+        <!-- top Products -->
+        <div class="row">
+            <!-- //product left -->
+
+            {% block sidebar %}
+                <div class="side-bar col-lg-3">
+            {% endblock sidebar %}
+
+            {% include 'include/sidebar.html' %}
+            </div>
+
+            {% block movie %}
+
+            {% endblock movie %}
+        </div>
+    </div>
+</section>
+{% endblock content %}
