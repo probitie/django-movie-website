@@ -52,11 +52,11 @@ class MovieShotsInline(admin.TabularInline):
 class MovieAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
-    list_editable = ("draft", )
+    # list_editable = ()
+    actions = ("publish", "unpublish")
 
     # форма с редактором
     form = MovieAdminForm
-
 
     search_fields = ("title", "category__name")
     inlines = (ReviewInline, MovieShotsInline)
@@ -85,6 +85,29 @@ class MovieAdmin(admin.ModelAdmin):
             "fields": (("url", "draft"),)
         }),
     )
+
+    # actions для админки
+    def publish(self, request, queryset):
+        self._set_queryset_publish(request, queryset, False)
+
+    publish.short_description = "Опубликовать"
+    publish.allowed_permissions = ("change", )
+
+    def unpublish(self, request, queryset):
+        self._set_queryset_publish(request, queryset, True)
+
+    unpublish.short_description = "Снять с публикации"
+    unpublish.allowed_permissions = ("change",)
+
+    def _set_queryset_publish(self, request, queryset, flag: bool):
+        """Публикование/ снятие с публикации записей"""
+        row_update = queryset.update(draft=flag)
+        if row_update == 1:
+            message_bit = "1 запись обновлена"
+        else:
+            message_bit = f"{row_update} записей обновлены"
+
+        self.message_user(request, f"{message_bit}")
 
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.poster.url} width="100" height="110">')
