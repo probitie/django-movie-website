@@ -76,6 +76,10 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def get_real_reviews(self):
+        """Возвращает настоящие отзывы на фильм (те, которые не являются ответами на другие отзывы)"""
+        return self.review_set.filter(parent__isnull=True)
+
     def get_absolute_url(self):
         return reverse("movie_detail", kwargs={'slug': self.url})
 
